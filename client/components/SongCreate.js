@@ -9,7 +9,10 @@ class SongCreate extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {title:''};
+        this.state = {
+            title:'',
+           // isChecked:""
+        };
     }
 
     onSubmit(event) {
@@ -26,7 +29,13 @@ class SongCreate extends Component {
             <div>
                 <Link to ="/"> Back</Link>
                 <h3>Create a new song</h3>
-                <form onSubmit={this.onSubmit.bind(this)}>
+                {/* <p>
+                    <input type="checkbox" className="filled-in" id="filled-in-box"
+                     checked={this.state.isChecked} 
+                     onChange={(event) => this.setState({isChecked:event.target.checked})} />
+                    <label>Broadcast?</label>
+                </p> */}
+                <form onSubmit={this.onSubmit.bind(this)}>                    
                     <label>Song Title: </label>
                     <input onChange={event => this.setState({title:event.target.value})}
                         value={this.state.title}/>

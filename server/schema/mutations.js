@@ -2,7 +2,9 @@
 const mongoose = require('mongoose');
 const Song = mongoose.model('song');
 const Lyric = mongoose.model('lyric');
+const { PubSub, SubscriptionManager } = require ('graphql-subscriptions');
 
+const pubsub = new PubSub();
 
 
 const MutationType = `
@@ -17,7 +19,9 @@ const MutationType = `
 
 const resolveMutation = {
   addSong: (root,{title}) => {
-    return (new Song({ title })).save();
+    let song =  (new Song({ title })).save();
+    pubsub.publish('newSong', {song: song});
+    return song;
   },
   addLyricToSong: (root, { songId, content }) => {
     return Song.addLyric(songId, content);
@@ -32,6 +36,7 @@ const resolveMutation = {
 
 module.exports = {
   Mutation : MutationType, 
-  MutationResolvers : resolveMutation
+  MutationResolvers : resolveMutation,
+  pubsub
 };
 
