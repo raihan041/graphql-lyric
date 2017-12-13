@@ -1,11 +1,8 @@
-const _ = require('lodash');
-const graphql = require('graphql');
-const { GraphQLSchema } = graphql;
+const expressGraphQL = require('express-graphql');
 
-const RootQueryType = require('./root_query_type');
-const mutations = require('./mutations');
+const {  makeExecutableSchema } = require('graphql-tools');
 
-module.exports = new GraphQLSchema({
-  query: RootQueryType,
-  mutation: mutations
-});
+const resolvers  =  require('./resolvers'); // Will be implemented at a later stage.
+const typeDefs = require('./types');
+
+module.exports = new makeExecutableSchema({ typeDefs, resolvers });
