@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/StephenGrider/Lyrical-GraphQL"
+    "url": "https://github.com/raihan041/graphql-lyric.git"
   },
   "scripts": {
     "dev": "nodemon index.js --ignore client"
