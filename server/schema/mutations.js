@@ -2,9 +2,8 @@
 const mongoose = require('mongoose');
 const Song = mongoose.model('song');
 const Lyric = mongoose.model('lyric');
-const { PubSub, SubscriptionManager } = require ('graphql-subscriptions');
+const pubsub = require ('../helper/pubsub.js');
 
-const pubsub = new PubSub();
 
 
 const MutationType = `
@@ -37,7 +36,6 @@ const resolveMutation = {
 
 module.exports = {
   Mutation : MutationType, 
-  MutationResolvers : resolveMutation,
-  pubsub
+  MutationResolvers : resolveMutation
 };
 

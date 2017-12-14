@@ -1,23 +1,7 @@
 const express = require('express');
 const models = require('./models');
-const expressGraphQL = require('express-graphql');
-const {
-  graphqlExpress,
-  graphiqlExpress,
-} = require('graphql-server-express');
-const cors = require('cors');
-
+//const expressGraphQL = require('express-graphql');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const {  makeExecutableSchema } = require('graphql-tools');
-
-const schema = require('./schema/schema');// new makeExecutableSchema({ typeDefs, resolvers });
-
-//subscription
-
-const { execute, subscribe } = require('graphql');
-const { createServer } = require('http');
-const { SubscriptionServer } = require('subscriptions-transport-ws');
 
 
 const app = express();
@@ -35,9 +19,6 @@ mongoose.connection
     .on('error', error => console.log('Error connecting to MongoLab:', error));
 
 
-const WSPORT = 3000;
-
-// app.use('*', cors({ origin: 'http://localhost:4000' }));
 // app.use(bodyParser.json());
 // app.use('/graphql', expressGraphQL({
 //   schema,
@@ -45,34 +26,6 @@ const WSPORT = 3000;
 //   subscriptionsEndpoint: `ws://localhost:${WSPORT}/subscriptions`
 // }));
 
-
-app.listen(4000, () => {
-  console.log('Listening');
-});
-
-app.use('/graphql', bodyParser.json(), graphqlExpress({
-  schema
-}));
-
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: '/graphql',
-  subscriptionsEndpoint: `ws://localhost:${WSPORT}/subscriptions`
-}));
-
-// Wrap the Express server
-const ws = createServer(app);
-ws.listen(WSPORT, () => {
-  console.log(`GraphQL Server is now running on http://localhost:${WSPORT}`);
-  // Set up the WebSocket for handling GraphQL subscriptions
-  new SubscriptionServer({
-      execute,
-      subscribe,
-      schema
-    }, {
-      server: ws,
-      path: '/subscriptions',
-    });
-});
 
 
 const webpackMiddleware = require('webpack-dev-middleware');

@@ -4,7 +4,7 @@ const Song = mongoose.model('song');
 const Lyric = mongoose.model('lyric');
 const {withFilter } = require ('graphql-subscriptions');
 
-const {pubsub} = require('./mutations');
+const pubsub = require ('../helper/pubsub.js');
 
 
 const SubscriptionType = `
