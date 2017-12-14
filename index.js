@@ -7,20 +7,17 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 //schema
-
-
 const schema = require('./server/schema/schema');// new makeExecutableSchema({ typeDefs, resolvers });
 //subscription
-
 const { execute, subscribe } = require('graphql');
 const { createServer } = require('http');
 const { SubscriptionServer } = require('subscriptions-transport-ws');
 // app.listen(4000, () => {
 //   console.log('Listening');
 // });
-const PORT = 2000;
+const PORT = 3000;
 
- app.use('*', cors({ origin: 'http://localhost:7000' }));
+ app.use('*', cors({ origin: 'http://localhost:3000' }));
 
  app.use('/graphql', bodyParser.json(), graphqlExpress({
     schema
@@ -38,6 +35,16 @@ server.listen(PORT, () => {
       execute,
       subscribe,
       schema,
+      // onOperation: (message, params, webSocket) => {
+      //   return {  params,context: {mongo} }
+      // }
+      // onOperation: async (message, params, webSocket) => {
+      //   context.publish = publish;
+      //   context.pubsub = pubsub;
+      //   context.settings = await context.api.getSettings();
+      //   params.context = { ...params.context, ...context };
+      //   return params;
+      // }
     }, {
       server: server,
       path: '/subscriptions',

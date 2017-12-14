@@ -9,7 +9,7 @@ const pubsub = require ('../helper/pubsub.js');
 
 const SubscriptionType = `
   type Subscription {
-    songAdded: Song
+    songAdded: Song!
     songDeleted: Song!
   }
   `;
@@ -20,9 +20,7 @@ const resolveSubscription = {
         subscribe: () => pubsub.asyncIterator('songAdded')        
     },
     songDeleted: {      
-        subscribe: withFilter(() => pubsub.asyncIterator('sondDeleted'), (payload, variables) => {
-            return true;
-        })        
+        subscribe: () => pubsub.asyncIterator('songDeleted')        
     },
 //   addLyricToSong: (root, { songId, content }) => {
 //     return Song.addLyric(songId, content);
