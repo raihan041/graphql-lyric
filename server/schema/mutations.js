@@ -19,9 +19,9 @@ const MutationType = `
 
 const resolveMutation = {
   addSong: (root,{title}) => {
-    let song =  (new Song({ title })).save();
-    pubsub.publish('newSong', {song: song});
-    return song;
+    let songAdded =  (new Song({ title })).save();
+    pubsub.publish('songAdded',{songAdded});
+    return songAdded;
   },
   addLyricToSong: (root, { songId, content }) => {
     return Song.addLyric(songId, content);
@@ -30,6 +30,7 @@ const resolveMutation = {
     return Lyric.like(id);
   },
   deleteSong: (root, { id }) => {
+    pubsub.publish('songDeleted');
     return Song.remove({ _id: id });
   }
 };

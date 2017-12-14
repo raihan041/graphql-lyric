@@ -2,26 +2,27 @@
 const mongoose = require('mongoose');
 const Song = mongoose.model('song');
 const Lyric = mongoose.model('lyric');
-const { SubscriptionManager } = require ('graphql-subscriptions');
+const {withFilter } = require ('graphql-subscriptions');
 
 const {pubsub} = require('./mutations');
 
 
 const SubscriptionType = `
   type Subscription {
-    songAdded(title: String): Song
-    songDeleted(id: ID): Song
+    songAdded: Song
+    songDeleted: Song!
   }
   `;
 
 
 const resolveSubscription = {
-    songAdded: (root,{title}) => {
-        
-        subscribe: withFilter(() => pubsub.asyncIterator('commentAdded'), (payload, variables) => {
-            return payload.commentAdded.repository_name === variables.repoFullName;
-        });
-          
+    songAdded: {     
+        subscribe: () => pubsub.asyncIterator('songAdded')        
+    },
+    songDeleted: {      
+        subscribe: withFilter(() => pubsub.asyncIterator('sondDeleted'), (payload, variables) => {
+            return true;
+        })        
     },
 //   addLyricToSong: (root, { songId, content }) => {
 //     return Song.addLyric(songId, content);
