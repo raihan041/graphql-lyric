@@ -27,7 +27,6 @@ class SongList extends Component {
 
     componentWillMount()
     {
-        console.log(this.props.data);
         this.props.data.subscribeToMore({
             document: ON_ADD_MESSAGE_SUBSCRIPTION,
             // variables: {
@@ -46,22 +45,30 @@ class SongList extends Component {
             }
         });
 
-        // this.props.data.subscribeToMore({
-        //     document: ON_DELETE_MESSAGE_SUBSCRIPTION,
-        //     updateQuery: (prev, {subscriptionData}) => {
-        //         if (!subscriptionData.data) {
-        //             return prev;
-        //         }
+        this.props.data.subscribeToMore({
+            document: ON_DELETE_MESSAGE_SUBSCRIPTION,
+            updateQuery: (prev, {subscriptionData}) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
 
-        //         const song = subscriptionData.data.songDeleted;
-        //         if(song) return prev;
-        //         return {
-        //             ...prev,
-        //             songs: [...prev.songs, song ]
-        //         };
+                this.props.data.refetch();
+
+                // const song = subscriptionData.data.songDeleted;
+                // if(song) return prev;
                 
-        //     }
-        // });
+                // const objIndex = prev.songs.findIndex(o => o.id === song.id)
+                
+                // if(objIndex > -1) {
+                //     prev.songs.slice(objIndex, 1)
+                // }
+                // return {
+                //     ...prev,
+                //     songs: [...prev.songs ]
+                // };
+                
+            }
+        });
     }
 
     render() {

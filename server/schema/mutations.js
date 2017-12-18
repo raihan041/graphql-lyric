@@ -4,7 +4,13 @@ const Song = mongoose.model('song');
 const Lyric = mongoose.model('lyric');
 const pubsub = require ('../helper/pubsub.js');
 
-
+class SongType {
+  constructor(id) {
+    this.id = id;
+    this.title = "";
+    this.lyrics = null;
+  }
+}
 
 const MutationType = `
   type Mutation {
@@ -30,7 +36,10 @@ const resolveMutation = {
   },
   deleteSong: (root, { id }) => {
     let songDeleted = Song.remove({ _id: id });//Song.findById(id);
-    pubsub.publish('songDeleted',{songDeleted});
+    var songInfo = new SongType(id=id);
+    pubsub.publish('songDeleted',{songDeleted:songInfo});
+
+    
     return songDeleted;
   }
 };
