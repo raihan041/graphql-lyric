@@ -39,6 +39,7 @@ class SongList extends Component {
 
                 const song = subscriptionData.data.songAdded;
                 return {
+                    ...prev,
                     songs: [...prev.songs, song ]
                 };
                 

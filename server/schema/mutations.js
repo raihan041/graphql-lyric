@@ -29,16 +29,22 @@ const resolveMutation = {
     return songAdded;
   },
   addLyricToSong: (root, { songId, content }) => {
-    return Song.addLyric(songId, content);
+    let lyricAdded = Song.addLyric(songId, content);
+    pubsub.publish('lyricAdded',{
+      lyricAdded,
+      songId
+    });
+    return lyricAdded;
   },
   likeLyric: (root, { id }) => {
-    return Lyric.like(id);
+    let lyricIsLiked = Lyric.like(id);
+    pubsub.publish('lyricIsLiked',{lyricIsLiked});
+    return lyricIsLiked;
   },
   deleteSong: (root, { id }) => {
     let songDeleted = Song.remove({ _id: id });//Song.findById(id);
     var songInfo = new SongType(id=id);
     pubsub.publish('songDeleted',{songDeleted:songInfo});
-
     
     return songDeleted;
   }

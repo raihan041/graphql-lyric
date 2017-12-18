@@ -11,23 +11,31 @@ const SubscriptionType = `
   type Subscription {
     songAdded: Song!
     songDeleted: Song!
+    lyricAdded(songId:ID!): Song!
+    lyricIsLiked(id: ID!): Lyric! 
   }
   `;
 
 
 const resolveSubscription = {
-    songAdded: {     
+    songAdded:  {     
         subscribe: () => pubsub.asyncIterator('songAdded')        
     },
     songDeleted: {      
         subscribe: () => pubsub.asyncIterator('songDeleted')        
     },
-//   addLyricToSong: (root, { songId, content }) => {
-//     return Song.addLyric(songId, content);
-//   },
-//   likeLyric: (root, { id }) => {
-//     return Lyric.like(id);
-//   },
+    lyricAdded:{
+        subscribe: withFilter(
+            () => pubsub.asyncIterator('lyricAdded'),
+            (payload, args) => payload.songId === args.songId,
+          )
+    },
+    lyricIsLiked:{
+        subscribe: withFilter(
+            () => pubsub.asyncIterator('lyricIsLiked'),
+            (payload, args) => payload.id === args.id,
+          )
+    },
 //   deleteSong: (root, { id }) => {
 //     return Song.remove({ _id: id });
 //   }

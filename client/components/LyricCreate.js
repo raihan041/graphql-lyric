@@ -11,6 +11,8 @@ class LyricCreate extends Component {
         this.state = {content:''}
     }
 
+    
+
     onSubmit(event)
     {
         event.preventDefault();
@@ -51,5 +53,6 @@ mutation AddLyricToSong($content: String, $songId: ID) {
   }
     
 `;
+
 
 export default graphql(mutation)(LyricCreate);

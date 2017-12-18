@@ -12,6 +12,30 @@ class SongDetail extends Component {
         super(props);
     }
 
+    componentWillMount()
+    {
+        this.props.data.subscribeToMore({
+            document: ON_ADD_LYRIC_SUBSCRIPTION,
+            variables: {
+                songId: this.props.params.id,
+            },
+            updateQuery: (prev, {subscriptionData}) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+
+                const song = subscriptionData.data.lyricAdded;
+                return {
+                    ...prev,
+                    song
+                };
+                
+                
+            }
+        });
+
+    }
+
     render() {
         if(this.props.data.loading) return (<div>Loading ...</div>);
 
@@ -29,6 +53,21 @@ class SongDetail extends Component {
         );
     }
 }
+
+const ON_ADD_LYRIC_SUBSCRIPTION = gql`
+subscription LyricAdded($songId: ID!) {
+    lyricAdded(songId: $songId) {
+      id
+      title
+      lyrics {
+        id
+        content
+        likes
+      }
+    }
+  }
+`;
+
 
 export default graphql(fetchSongDetailQuery,{
     options: (props) => {
