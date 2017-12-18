@@ -11,7 +11,7 @@ const schema = require('./server/schema/schema');// new makeExecutableSchema({ t
 //subscription
 const { execute, subscribe } = require('graphql');
 const { createServer } = require('http');
-const { SubscriptionServer } = require('subscriptions-transport-ws');
+import { SubscriptionServer }from 'subscriptions-transport-ws';  // babel works
 // app.listen(4000, () => {
 //   console.log('Listening');
 // });

@@ -25,6 +25,45 @@ class SongList extends Component {
         );
     }
 
+    componentWillMount()
+    {
+        console.log(this.props.data);
+        this.props.data.subscribeToMore({
+            document: ON_ADD_MESSAGE_SUBSCRIPTION,
+            // variables: {
+            //     repoName: params.repoFullName,
+            // },
+            updateQuery: (prev, {subscriptionData}) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+
+                const song = subscriptionData.data.songAdded;
+                return {
+                    songs: [...prev.songs, song ]
+                };
+                
+            }
+        });
+
+        // this.props.data.subscribeToMore({
+        //     document: ON_DELETE_MESSAGE_SUBSCRIPTION,
+        //     updateQuery: (prev, {subscriptionData}) => {
+        //         if (!subscriptionData.data) {
+        //             return prev;
+        //         }
+
+        //         const song = subscriptionData.data.songDeleted;
+        //         if(song) return prev;
+        //         return {
+        //             ...prev,
+        //             songs: [...prev.songs, song ]
+        //         };
+                
+        //     }
+        // });
+    }
+
     render() {
         if(this.props.data.loading) return (<div>Loading ...</div>);
         return (
@@ -51,6 +90,23 @@ mutation DeleteSong($id: ID) {
       title
     }
   }
+  `;
+  const ON_DELETE_MESSAGE_SUBSCRIPTION = gql`
+  subscription {
+      songDeleted{
+        id
+        title
+      }
+    }  
+  `;
+
+  const ON_ADD_MESSAGE_SUBSCRIPTION = gql`
+  subscription {
+      songAdded{
+        id
+        title
+      }
+    }  
   `;
 
 export default graphql(mutation)

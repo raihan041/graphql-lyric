@@ -29,7 +29,7 @@ const resolveMutation = {
     return Lyric.like(id);
   },
   deleteSong: (root, { id }) => {
-    let songDeleted = Song.remove({ _id: id });
+    let songDeleted = Song.remove({ _id: id });//Song.findById(id);
     pubsub.publish('songDeleted',{songDeleted});
     return songDeleted;
   }

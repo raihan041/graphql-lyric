@@ -53,4 +53,13 @@ mutation AddSong($title: String) {
   }  
 `;
 
+const ON_ADD_MESSAGE_SUBSCRIPTION = gql`
+subscription {
+    songAdded{
+      id
+      title
+    }
+  }  
+`;
+
 export default graphql(mutation)(SongCreate);
