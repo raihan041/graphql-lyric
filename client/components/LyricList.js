@@ -23,6 +23,13 @@ class LyricList extends Component {
             }
         });
     }
+
+    componentWillMount()
+    {
+        console.log(this.props);
+        
+    }
+
     renderSongs() {
         return(
             this.props.lyrics.map(({id,content,likes}) => {
@@ -58,5 +65,6 @@ mutation LikeLyric($id: ID) {
     }
   }  
 `;
+
 
 export default graphql(mutation)(LyricList);

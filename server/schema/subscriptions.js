@@ -12,7 +12,7 @@ const SubscriptionType = `
     songAdded: Song!
     songDeleted: Song!
     lyricAdded(songId:ID!): Song!
-    lyricIsLiked(id: ID!): Lyric! 
+    lyricIsLiked: Lyric! 
   }
   `;
 
@@ -31,10 +31,7 @@ const resolveSubscription = {
           )
     },
     lyricIsLiked:{
-        subscribe: withFilter(
-            () => pubsub.asyncIterator('lyricIsLiked'),
-            (payload, args) => payload.id === args.id,
-          )
+        subscribe: () => pubsub.asyncIterator('lyricIsLiked')
     },
 //   deleteSong: (root, { id }) => {
 //     return Song.remove({ _id: id });

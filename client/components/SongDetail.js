@@ -34,6 +34,21 @@ class SongDetail extends Component {
             }
         });
 
+        this.props.data.subscribeToMore({
+            document: ON_LIKE_LYRIC_SUBSCRIPTION,
+            // variables: {
+            //     id: this.state.id,
+            // },
+            updateQuery: (prev, {subscriptionData}) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+
+                this.props.data.refetch();
+                
+            }
+        });
+
     }
 
     render() {
@@ -66,6 +81,18 @@ subscription LyricAdded($songId: ID!) {
       }
     }
   }
+`;
+
+const ON_LIKE_LYRIC_SUBSCRIPTION = gql`
+subscription
+{
+  lyricIsLiked
+  {
+    id
+    content
+    likes
+  }
+}
 `;
 
 
