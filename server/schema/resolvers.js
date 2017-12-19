@@ -5,6 +5,13 @@ const {withFilter } = require ('graphql-subscriptions');
 
 const pubsub = require ('../helper/pubsub.js');
 
+class SongType{
+    constructor(id) {
+       this.id = id;
+    }
+    
+};
+
 export default {
     Song : {
         lyrics: (root) => {
